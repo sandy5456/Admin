@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:kafe/BLOC/statmanagment.dart';
 
 class SingleImageUpload extends StatefulWidget {
   @override
@@ -114,7 +115,7 @@ class _SingleImageUploadState extends State<SingleImageUpload> {
         imageUpload.imageUrl = '';
         images.replaceRange(index, index + 1, [imageUpload]);
         if (index == 0) {
-          // stateManagmentData.setImageValue(file);
+          stateManagmentData.setImageValue(file);
           // stateManagmentData.setImagePath(file.path);
           print(file.path);
           //print(stateManagmentData.image.path);

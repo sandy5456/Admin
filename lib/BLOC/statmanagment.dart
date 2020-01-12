@@ -1,12 +1,12 @@
 import 'dart:io';
 
 class StateManagmentData {
-  String itemcatogery;
+  int itemcatogery;
   File image;
   setImageValue(File value) {
     image = value;
   }
-  setitemCatageryvalue(String value){
+  setitemCatageryvalue(int value){
     itemcatogery=value;
   }
 }
