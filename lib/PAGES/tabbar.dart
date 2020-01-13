@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kafe/BLOC/products_bloc.dart';
 import 'package:kafe/MODELS/food_response.dart';
 import 'package:kafe/PAGES/menu_page.dart';
+import 'package:kafe/PAGES/orders_page.dart';
 
 class Tabbar extends StatefulWidget {
   int colorVal = 0xff84020e;
@@ -142,7 +143,7 @@ class _TabbarState extends State<Tabbar> with TickerProviderStateMixin {
                       //               ));
                       //       }),
                       // ),
-                      MenuScreen(),
+                      OrderTab(),
                       MenuScreen()
                     ],
                   ),
