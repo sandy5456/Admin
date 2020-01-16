@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kafe/BLOC/products_bloc.dart';
 import 'package:kafe/FOODMENU/cold_drinks.dart';
+import 'package:kafe/FOODMENU/dessert/dessret.dart';
 import 'package:kafe/FOODMENU/hotdrinks.dart';
 import 'package:kafe/FOODMENU/maincourse/main_course.dart';
 import 'package:kafe/FOODMENU/pasta/pasta.dart';
@@ -12,7 +13,13 @@ import 'package:kafe/MODELS/food_response.dart';
 
 
 class DessertList extends StatefulWidget {
+    List<Food> foods;
+  int cId;
+  String name;
   var productId;
+  DessertList({
+    this.foods, this.name, this.cId
+  });
   @override
   _DessertListState createState() => _DessertListState();
 }
@@ -59,7 +66,7 @@ class _DessertListState extends State<DessertList> {
                       scrollDirection: Axis.vertical,
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ManCourse(
+                        return Desert(
                           cId: snapshot.data[index].cId,
                            name: snapshot.data[index].catogeryname,
                           foods: snapshot.data[index].foods,

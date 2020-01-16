@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kafe/BLOC/statmanagment.dart';
 
 import 'package:kafe/ORDERS/All_order.dart';
+import 'package:kafe/ORDERS/Today_order.dart';
 import 'package:kafe/ORDERS/all_orders_list.dart';
+import 'package:kafe/ORDERS/yesderday_orders.dart';
 
 import 'package:vertical_tabs/vertical_tabs.dart';
 
@@ -18,9 +21,11 @@ class _OrderTabState extends State<OrderTab> {
     return 
        Container(
          color: Colors.white,
+         
          child: Stack(
            
           children: <Widget>[
+            
              Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
@@ -35,7 +40,7 @@ class _OrderTabState extends State<OrderTab> {
                     tabsWidth: 100,
                     tabs: <Tab>[
                       Tab(
-                        child: box("TODAY"),
+                        child: box("TODAY"),//=${stateManagmentData.todayOrderCount}
                       ),
                       Tab(child: box("YESTERDAY")),
                       Tab(child: box("ALL")),
@@ -48,9 +53,10 @@ class _OrderTabState extends State<OrderTab> {
                     //   name: widget.name,
                     //   foods: widget.foods,
                     // ),
-                     AllOrdersPage(),
-                    AllOrdersList(),
-                    AllOrdersList(),
+                     TodayOrdersPage(),
+                     YesterdayOrdersPage(),
+                   
+                   AllOrdersPage(),
 
                     ],
                   ),

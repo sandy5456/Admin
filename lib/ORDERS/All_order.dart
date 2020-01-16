@@ -42,6 +42,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                   itemBuilder: (BuildContext context, int index) {
                    
                     return AllOrdersList(
+                       userId: snapshot.data[index].userId,
                       price: snapshot.data[index].price,
                       date: snapshot.data[index].date,
                       orderId: snapshot.data[index].orderId,

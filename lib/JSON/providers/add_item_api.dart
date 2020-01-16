@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' show Client;
+import 'package:kafe/BLOC/products_bloc.dart';
 import 'package:kafe/BLOC/statmanagment.dart';
 
 
@@ -25,6 +26,7 @@ class AddItemApi {
         "http://142.93.219.45:8080/KyanCafe/kyancafe/addMenuItem?categoryId.categoryId=$id&productName=$name&price=$price&offer=$offer",
         data: formData);
     if (response.statusCode == 200) {
+       propertyBloc.fetchAllCategory();
       print(response.statusCode);
       return response;
     } else {

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:kafe/BLOC/Today_order_bloc.dart';
 import 'package:kafe/BLOC/all_orders_Bloc.dart';
 import 'package:kafe/MODELS/order_response_model.dart';
 
 class AllOrdersList extends StatefulWidget {
+  String userId;
   int orderId;
   double price;
   String date;
   List<Orders> orders;
-  AllOrdersList({this.orderId, this.price, this.orders, this.date});
+  AllOrdersList({this.orderId, this.price, this.orders, this.date,this.userId});
 
   @override
   _AllOrdersListState createState() => _AllOrdersListState();
@@ -46,14 +48,14 @@ class _AllOrdersListState extends State<AllOrdersList> {
                 itemBuilder: (BuildContext context, int index) {
                  
                   return Container(
-                    // color: Colors.red,
+                   //  color: Colors.red,
                     height: size.height * 0.20,
                     width: size.width,
 
                     padding: EdgeInsetsDirectional.only(
                         start: size.width * 0.01, end: size.width * 0.01),
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black12)),
+                        border: Border.all(color: Colors.black26)),
 
                     child: Stack(
                       children: <Widget>[
@@ -90,6 +92,21 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                     fontSize: 12,
                                     fontFamily: 'Abel',
                                     fontWeight: FontWeight.bold),
+                              ),
+                            )),
+                            Positioned(
+                            top: size.height * 0.005,
+                            left: size.width * 0.54,
+                            child: Container(
+                              //color: Colors.red,
+                              height: size.height * 0.030,
+                              width: size.width * 0.17,
+                              child: Text(
+                                "p.no:${widget.userId}",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: 'Abel',
+                                    fontWeight: FontWeight.normal),
                               ),
                             )),
                         Positioned(
@@ -174,7 +191,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             ),
 
                         Positioned(
-                          bottom: size.height * 0.025,
+                          bottom: size.height * 0.015,
                           left: size.width * 0.02,
                           child: Container(
                               child: RichText(
@@ -200,7 +217,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                         ),
                       
                         Positioned(
-                          bottom: size.height * 0.016,
+                          bottom: size.height * 0.010,
                           left: size.width * 0.4,
                           child: ButtonTheme(
                               buttonColor: Colors.white,
@@ -211,7 +228,9 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                   isFavorite[index] = isFavorite[index] == null
                                       ? true
                                       : !isFavorite[index];
-                                  setState(() {});
+                                  setState(() {
+                                      
+                                  });
                                 },
                                 child: isFavorite[index] == null
                                     ? Container(

@@ -4,13 +4,15 @@ class AllOrderResponse {
   List<Orders>orders;
   final String date;
   final int cId;
+  final String userId;
 
   AllOrderResponse({
     this.price,
     this.orderId,
     this.orders,
     this.cId,
-    this.date
+    this.date,
+    this.userId
   });
 
   factory AllOrderResponse.fromJson(Map<String, dynamic> json) {
@@ -22,7 +24,8 @@ class AllOrderResponse {
           price: json['price'],
       orderId: json['orderId'],
      // cId: json['categoryId'],
-      date: json['date']
+      date: json['date'],
+      userId: json['userId'],
     );
   }
 }

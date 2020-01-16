@@ -79,7 +79,7 @@ class _JsonApiDropdownState extends State<JsonApiDropdown> {
                   ),
                 ],
               ),
-              value: '${item['categoryName']}' +
+              value: '${item['categoryName']}' "  "
                   '${item['categoryId']}'.toString(),
             );
           }).toList(),
@@ -89,11 +89,12 @@ class _JsonApiDropdownState extends State<JsonApiDropdown> {
               print(newVal);
 
               var string = newVal;
-              var newString = string.substring(string.length - 1);
-
-              var value = int.parse(newString);
-              print(value);
+              var singelDigit = string.substring(string.length - 2);
+              print(singelDigit);
+              var value = int.parse(singelDigit);
+             
               stateManagmentData.setitemCatageryvalue(value);
+              print(stateManagmentData.itemcatogery);
             });
           },
           value: _mySelection,
