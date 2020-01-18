@@ -97,7 +97,7 @@ class _TabbarState extends State<Tabbar> with TickerProviderStateMixin {
                       decoration: BoxDecoration(
                           border: Border(
                               right: BorderSide(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   width: 1,
                                   style: BorderStyle.solid))),
                       child: Center(

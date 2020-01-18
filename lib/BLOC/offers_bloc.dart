@@ -15,6 +15,10 @@ class OffersBloc {
     _favListFetcher.sink.add(categoryModel);
   }
 
+  removeOffer(var productId,offer) {
+    _repository.removeOffer(productId,offer);
+  } 
+
   dispose() async {
     await _favListFetcher.drain();
     _favListFetcher.close();

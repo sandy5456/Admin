@@ -20,6 +20,7 @@ class Repository{
     final editItemApi=EditItemApi();
     final offerApi=OfferApi();
     final removeApi=RemoveApi();
+    final removeOfferApi=RemoveOfferApi();
 
  Future<List<GetOfferModel>> fetchOffersList() => offerApi.fetchoffersList();
       Future<List<AllOrderResponse>> fetchyesterdayOrders() =>
@@ -37,4 +38,6 @@ class Repository{
   editItemApi.editItemData(cId,productId,name,price,offers,image);
    Future removeProduct(var productId ) =>
       removeApi.removeItem(productId);
+         Future removeOffer(var productId,offer ) =>
+      removeOfferApi.removeOffer(productId,offer);
  }

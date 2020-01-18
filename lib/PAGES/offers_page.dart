@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kafe/BLOC/offers_bloc.dart';
+import 'package:kafe/BLOC/remove_item_bloc.dart';
 import 'package:kafe/MODELS/offer_model.dart';
 class OffersPage extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _OffersPageState extends State<OffersPage> {
     super.initState();
     offersBloc.fetchOffersList();
   }
+    int discount;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -49,7 +51,7 @@ class _OffersPageState extends State<OffersPage> {
                                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 InkWell(
                                     onTap: () async =>
-                                        {alertBox(context, index,  snapshot.data[index].image)},
+                                        {alertBox(context, index,  snapshot.data[index].image,snapshot.data[index].pId)},
                                     child: Stack(
                                           children: <Widget>[
                                             Container(
@@ -74,7 +76,7 @@ class _OffersPageState extends State<OffersPage> {
                                                     children: <Widget>[
                                                       Positioned(
                                                         top: size.height * 0.015,
-                                                        right: size.width * 0.25,
+                                                        right: size.width * 0.45,
                                                         child: Container(
                                                           
                                                           width: size.width * 0.3,
@@ -93,8 +95,10 @@ class _OffersPageState extends State<OffersPage> {
                                                       ),
                                                       Positioned(
                                                         top: size.height * 0.012,
-                                                        right: size.width * 0.1,
+                                                        right: size.width * 0.40,
                                                         child: Container(
+                                                          width: size.width*0.1,
+                                                          //color: Colors.red,
                                                             child: RichText(
                                                           text: TextSpan(
                                                             style:
@@ -119,23 +123,53 @@ class _OffersPageState extends State<OffersPage> {
                                                           ),
                                                         )),
                                                       ),
+                                                                                                            Positioned(
+                                                        top: size.height * 0.012,
+                                                        right: size.width * 0.15,
+                                                        child: Container(
+                                                            child: RichText(
+                                                          text: TextSpan(
+                                                            style:
+                                                                DefaultTextStyle.of(context)
+                                                                    .style,
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                  text:
+                                                                      "${snapshot.data[index].offers}",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight.bold,
+                                                                      color: Colors.green,
+                                                                      fontSize: 10)),
+                                                              TextSpan(
+                                                                  text: ' %',
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight.bold,
+                                                                          color: Colors.red,
+                                                                      fontSize: 10)),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                      ),
                                                       Positioned(
                                                         top: size.height * 0.003,
                                                         right: size.width * 0.00,
-                                                        child: Container(
-                                                          color: Color(0xff8c0001),
-                                                          child: Center(
-                                                            child: Text(
-                                                              "Remove",
-                                                              style: TextStyle(
-                                                                  fontFamily: 'Abel',
-                                                                  color: Colors.white,
-                                                                  fontSize: 10),
+                                                       child: Container(
+                                                            color: Color(0xff8c0001),
+                                                            child: Center(
+                                                              child: Text(
+                                                                "Remove",
+                                                                style: TextStyle(
+                                                                    fontFamily: 'Abel',
+                                                                    color: Colors.white,
+                                                                    fontSize: 10),
+                                                              ),
                                                             ),
+                                                            height: size.height * 0.04,
+                                                            width: size.width * 0.10,
                                                           ),
-                                                          height: size.height * 0.04,
-                                                          width: size.width * 0.10,
-                                                        ),
+                                                        
                                                       )
                                                     ],
                                                   ),
@@ -178,7 +212,10 @@ class _OffersPageState extends State<OffersPage> {
       
     );
   }
-   alertBox(BuildContext context, int index, var image) {
+  removeOfferItem(var productId,offer) async {
+    await offersBloc.removeOffer(productId,offer);
+  }
+   alertBox(BuildContext context, int index, var image,id) {
  
 
     return showDialog(
@@ -191,7 +228,7 @@ class _OffersPageState extends State<OffersPage> {
                         BorderRadius.circular(40.0)), //this right here
                 child: Container(
                   color: Colors.white,
-                  height: MediaQuery.of(context).size.height * 0.50,
+                  height: MediaQuery.of(context).size.height * 0.45,
                   //width: MediaQuery.of(context).size.width * 0.60,
                   child: ListView(
                     children: <Widget>[
@@ -229,47 +266,7 @@ class _OffersPageState extends State<OffersPage> {
                               ))
                         ],
                       ),
-                      Stack(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 2, right: 2, top: 2),
-                            color: Colors.white12,
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.06,
-                            child: TextFormField(
-                              textAlignVertical: TextAlignVertical.bottom,
-                              controller: nameController,
-                              cursorColor: Colors.black,
-                              validator: (e) {
-                                if (e.isEmpty) {
-                                  return "Please item Name";
-                                }
-                              },
-                              onSaved: (e) => name = e,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.black54),
-                                  fillColor: Colors.black,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.black, width: 0.8),
-                                    borderRadius: BorderRadius.circular(0.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(0.0)),
-                                      borderSide: BorderSide(
-                                        color: Colors.black12,
-                                      )),
-                                  hintText: "New Name"),
-                            ),
-                          ),
-                        ],
-                      ),
+                    
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.10,
                         height: MediaQuery.of(context).size.height * 0.01,
@@ -279,45 +276,7 @@ class _OffersPageState extends State<OffersPage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.14,
                           ),
-                          Container(
-                            padding: EdgeInsets.only(left: 2, right: 2),
-                            height: MediaQuery.of(context).size.height * 0.06,
-                            width: MediaQuery.of(context).size.width * 0.20,
-                            color: Colors.white12,
-                            child: TextFormField(
-                              textAlignVertical: TextAlignVertical.bottom,
-                              cursorColor: Colors.black,
-                              controller: phoneNumberController,
-                              validator: (e) {
-                                if (e.isEmpty) {
-                                  return "Please enter price";
-                                }
-                              },
-                              onSaved: (e) => mobile = e,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(color: Colors.black54),
-                                fillColor: Colors.black,
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.black, width: 0.7),
-                                  borderRadius: BorderRadius.circular(0.0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(0.0)),
-                                    borderSide: BorderSide(
-                                      color: Colors.black12,
-                                    )),
-                                hintText: "Price Qr",
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
+                          
                           SizedBox(
                               width: MediaQuery.of(context).size.width * 0.10,
                           ),
@@ -367,17 +326,20 @@ class _OffersPageState extends State<OffersPage> {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.0130,
+                        height: MediaQuery.of(context).size.height * 0.0160,
                       ),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.0585,
+                          height: MediaQuery.of(context).size.height * 0.0700,
                           width: double.infinity, // match_parent
                           child: FlatButton(
                             color: Colors.black,
                             textColor: Colors.white,
                             onPressed: () {
-                              setState(() {
-                                check();
+                              setState(() { 
+                                discount =
+                                            int.parse(passwordController.text);
+                                 removeOfferItem(id, discount);
+                               // check();
                                 // addingtoCart("${widget.foods[index].id}",
                                 //     "${stateManagmentData.quantity}");
                                 //      getCartBloc.fetchAllGetCartItem();
