@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:kafe/BLOC/Today_order_bloc.dart';
 import 'package:kafe/BLOC/all_orders_Bloc.dart';
+import 'package:kafe/BLOC/conform-order_bloc.dart';
 import 'package:kafe/MODELS/order_response_model.dart';
+import 'package:toast/toast.dart';
 
 class AllOrdersList extends StatefulWidget {
+   final FoodStatus foodStatus;
   String userId;
   int orderId;
   double price;
   String date;
   List<Orders> orders;
-  AllOrdersList({this.orderId, this.price, this.orders, this.date,this.userId});
+  int tableNo;
+  AllOrdersList(
+      {this.orderId,
+      this.price,
+      this.orders,
+      this.date,
+      this.userId,
+      this.foodStatus,
+      this.tableNo});
 
   @override
   _AllOrdersListState createState() => _AllOrdersListState();
@@ -29,7 +41,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
     var size = MediaQuery.of(context).size;
     return Container(
       color: Colors.white,
-      height: MediaQuery.of(context).size.height * 0.22,
+      height: MediaQuery.of(context).size.height * 0.35,
       child: StreamBuilder<List<AllOrderResponse>>(
           stream: allOrdersBloc.allOrders,
           builder: (context, AsyncSnapshot<List<AllOrderResponse>> snapshot) {
@@ -49,13 +61,13 @@ class _AllOrdersListState extends State<AllOrdersList> {
                  
                   return Container(
                    //  color: Colors.red,
-                    height: size.height * 0.20,
+                    height: size.height * 0.35,
                     width: size.width,
 
                     padding: EdgeInsetsDirectional.only(
                         start: size.width * 0.01, end: size.width * 0.01),
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black26)),
+                        border: Border.all(color: Colors.black45)),
 
                     child: Stack(
                       children: <Widget>[
@@ -68,12 +80,12 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             left: size.width * 0.005,
                             child: Container(
                               //color: Colors.,
-                              height: size.height * 0.040,
-                              width: size.width * 0.12,
+                              height: size.height * 0.038,
+                              width: size.width * 0.10,
                               child: Text(
                                 widget.date,
                                 style: TextStyle(
-                                    fontSize: 9,
+                                    fontSize: 12.5,
                                     fontFamily: 'Abel',
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black45),
@@ -84,14 +96,22 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             left: size.width * 0.3,
                             child: Container(
                               //color: Colors.red,
-                              height: size.height * 0.040,
+                              height: size.height * 0.042,
                               width: size.width * 0.14,
-                              child: Text(
-                                "ORDER  ${widget.orderId}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'Abel',
-                                    fontWeight: FontWeight.bold),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "ORDER  ${widget.orderId}",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Abel',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text("T.No:${widget.tableNo}", style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: 'Abel',
+                                        fontWeight: FontWeight.bold)),
+                                ],
                               ),
                             )),
                             Positioned(
@@ -99,12 +119,12 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             left: size.width * 0.54,
                             child: Container(
                               //color: Colors.red,
-                              height: size.height * 0.030,
-                              width: size.width * 0.17,
+                              height: size.height * 0.018,
+                              width: size.width * 0.18,
                               child: Text(
                                 "p.no:${widget.userId}",
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 13,
                                     fontFamily: 'Abel',
                                     fontWeight: FontWeight.normal),
                               ),
@@ -116,20 +136,20 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             //color: Colors.,
                             child: Row(
                               children: <Widget>[
-                                SizedBox(width: 15),
+                                SizedBox(width: 20),
                                 Text(
-                                  " ITEM = ${widget.orders.length}",
+                                  "ITEM NAME${widget.orders.length}",
                                   style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 13,
                                       fontFamily: 'Abel',
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black45),
                                 ),
-                                SizedBox(width: size.width * 0.42),
+                                SizedBox(width: size.width * 0.44),
                                 Text(
                                   " QTY  ",
                                   style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 13,
                                       fontFamily: 'Abel',
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black45),
@@ -138,20 +158,21 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             ),
                           ),
                         ),
+                         
 
                         Positioned(
-                            bottom: size.height * 0.06,
+                            bottom: size.height * 0.040,
                             child: Container(
                               width: size.width,
-                              height: size.height * 0.07,
-                              color: Colors.white,
-                              child: ListView(
-                                children: <Widget>[
+                              height: size.height * 0.22,
+                              color: Colors.white  ,
+                              child: 
                                   Wrap(
                                     children: List.generate(
                                         widget.orders.length, (index) {
                                       return Container(
-                                        width: size.width * 0.6,
+                                        height: size.height*0.019,
+                                        width: size.width * 0.61,
                                         color: Colors.white,
                                         child: Row(
                                           mainAxisAlignment:
@@ -166,7 +187,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                               style: TextStyle(
                                                   fontFamily: 'Abel',
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: size.width * 0.028),
+                                                  fontSize: size.width * 0.025),
                                             ),
                                             Spacer(),
                                             Text(
@@ -177,18 +198,18 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                                   // color: Colors.black87,
                                                   fontFamily: 'Abel',
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: size.width * 0.030),
+                                                  fontSize: size.width * 0.026),
                                             ),
                                           ],
                                         ),
                                       );
                                     }),
                                   ),
-                                ],
-                              ),
+                                
                             )
                            
                             ),
+                           
 
                         Positioned(
                           bottom: size.height * 0.015,
@@ -209,30 +230,54 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
-                                        fontSize: 12,
+                                        fontSize: 15,
                                         fontFamily: 'Abel')),
                               ],
                             ),
                           )),
                         ),
-                      
+                      Positioned(
+                           top: size.height * 0.05,
+                           left: size.width*0.65,
+                        child: widget.foodStatus.foodStatus=="CONFIRMED"||widget.foodStatus.foodStatus=="NEW ORDER"?  Image.asset("images/dot.png",width: 40,color: Colors.red,):
+                        widget.foodStatus.foodStatus=="BEING_PREPARED"? Image.asset("images/dot.png",width: 40,color: Colors.orange,):
+                         Image.asset("images/dot.png",width: 40,color: Colors.green,)
+                      ),
                         Positioned(
                           bottom: size.height * 0.010,
                           left: size.width * 0.4,
                           child: ButtonTheme(
-                              buttonColor: Colors.white,
+                              buttonColor: Colors.white54,
                               minWidth: 10.0,
-                              height: 20.0,
+                              height: 15.0,
                               child: InkWell(
                                 onTap: () {
                                   isFavorite[index] = isFavorite[index] == null
                                       ? true
                                       : !isFavorite[index];
+                                         if (isFavorite[index]==true && widget.foodStatus.foodStatus=="NEW ORDER") {
+                                           print(widget.foodStatus.foodStatus);
+                                    Toast.show("order confirmed", context,
+                                        duration: 2,
+                                        gravity: Toast.CENTER,
+                                        backgroundColor: Colors.black
+                                        );
+                                    //isFavorite[index] = !isFavorite[index];
+                                    confirmOrder(
+                                        widget.orderId);
+                                  }
+                                  else{
+                                    Toast.show("already confirmed", context,
+                                        duration: 2,
+                                        gravity: Toast.CENTER,
+                                        backgroundColor: Colors.black
+                                        );
+                                  }
                                   setState(() {
                                       
                                   });
                                 },
-                                child: isFavorite[index] == null
+                                child: isFavorite[index] == null&&widget.foodStatus.foodStatus=="NEW ORDER"
                                     ? Container(
                                         // color: Colors.green,
                                         width:
@@ -240,7 +285,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                                 0.30,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.04,
+                                                0.03,
                                         decoration: new BoxDecoration(
                                             color: Colors.red,
                                             borderRadius: new BorderRadius.only(
@@ -251,7 +296,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                                         20.0))),
                                         child: Center(
                                             child: Text(
-                                          "CONFIRM",
+                                          "NEW ORDER",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontFamily: 'Abel'),
@@ -267,9 +312,9 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.04,
+                                                0.03,
                                             decoration: new BoxDecoration(
-                                                color: Colors.red,
+                                                color: Colors.white,
                                                 borderRadius: new BorderRadius
                                                         .only(
                                                     topLeft:
@@ -280,7 +325,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                                             20.0))),
                                             child: Center(
                                                 child: Text(
-                                              "CONFIRM",
+                                              "",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily: 'Abel'),
@@ -295,7 +340,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
-                                                0.04,
+                                                0.03,
                                             decoration: new BoxDecoration(
                                                 color: Colors.green,
                                                 borderRadius: new BorderRadius
@@ -331,5 +376,8 @@ class _AllOrdersListState extends State<AllOrdersList> {
             }
           }),
     );
+  }
+  confirmOrder(var orderId)async{
+    await confirmOrderBLoc.conformOrder(orderId);
   }
 }
