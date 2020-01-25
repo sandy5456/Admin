@@ -1,6 +1,8 @@
 import 'dart:async';
 
+
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kafe/BLOC/Today_order_bloc.dart';
 import 'package:kafe/BLOC/all_orders_Bloc.dart';
@@ -23,6 +25,7 @@ class _TodayOrdersPageState extends State<TodayOrdersPage> {
   }
 
   List<bool> isFavorite;
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +52,24 @@ class _TodayOrdersPageState extends State<TodayOrdersPage> {
                   itemBuilder: (BuildContext context, int index) {
                   //  stateManagmentData.settodayOrderCounr(snapshot.data.length);
                     //print(stateManagmentData.todayOrderCount);
+                if (snapshot.data[index].foodStatus.foodStatus ==
+                          "NEW ORDER") {
+                        FlutterRingtonePlayer.play(
+                          android: AndroidSounds.notification,
+                          ios: IosSounds.glass,
+                          looping: false, // Android only - API >= 28
+                          volume: 1000.0, // Android only - API >= 28
+                          asAlarm: false, // Android only - all APIs
+                        );
+                      }
                     return AllOrdersList(
-                      userId: snapshot.data[index].userId,
-                      price: snapshot.data[index].price,
-                      date: snapshot.data[index].date,
-                      orderId: snapshot.data[index].orderId,
-                                        orders: snapshot.data[index].orders,
+                         tableNo: snapshot.data[index].tableNo,
+                              foodStatus: snapshot.data[index].foodStatus,
+                              userId: snapshot.data[index].userId,
+                              price: snapshot.data[index].price,
+                              date: snapshot.data[index].date,
+                              orderId: snapshot.data[index].orderId,
+                              orders: snapshot.data[index].orders,
                                       );
     
           });

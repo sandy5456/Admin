@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -8,7 +9,7 @@ import 'package:kafe/MODELS/order_response_model.dart';
 import 'package:toast/toast.dart';
 
 class AllOrdersList extends StatefulWidget {
-   final FoodStatus foodStatus;
+  final FoodStatus foodStatus;
   String userId;
   int orderId;
   double price;
@@ -36,6 +37,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
     allOrdersBloc.fetchAllOrderResponce();
   }
 
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -49,6 +51,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
               if (isFavorite == null) {
                 isFavorite = List<bool>(snapshot.data.length);
               }
+           
               //List<Aminety>aminities=snapshot.data[0].aminety;
               // aMINITES=snapshot.data[10].aminety;
               // iMAGES=snapshot.data[0].image;
@@ -60,7 +63,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                 itemBuilder: (BuildContext context, int index) {
                  
                   return Container(
-                   //  color: Colors.red,
+                    //  color: Colors.red,
                     height: size.height * 0.35,
                     width: size.width,
 
@@ -71,10 +74,21 @@ class _AllOrdersListState extends State<AllOrdersList> {
 
                     child: Stack(
                       children: <Widget>[
-                        Container(
-                          color: Colors.grey[400],
-                          height: size.height * 0.05,
-                        ),
+                        widget.foodStatus.foodStatus == "CONFIRMED" ||
+                                widget.foodStatus.foodStatus == "NEW ORDER"
+                            ? Container(
+                                color: Colors.red,
+                                height: size.height * 0.05,
+                              )
+                            : widget.foodStatus.foodStatus == "BEING_PREPARED"
+                                ? Container(
+                                    color: Colors.orange,
+                                    height: size.height * 0.05,
+                                  )
+                                : Container(
+                                    color: Colors.green,
+                                    height: size.height * 0.05,
+                                  ),
                         Positioned(
                             top: size.height * 0.006,
                             left: size.width * 0.005,
@@ -107,14 +121,15 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                         fontFamily: 'Abel',
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text("T.No:${widget.tableNo}", style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'Abel',
-                                        fontWeight: FontWeight.bold)),
+                                  Text("T.No:${widget.tableNo}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'Abel',
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             )),
-                            Positioned(
+                        Positioned(
                             top: size.height * 0.005,
                             left: size.width * 0.54,
                             child: Container(
@@ -138,14 +153,14 @@ class _AllOrdersListState extends State<AllOrdersList> {
                               children: <Widget>[
                                 SizedBox(width: 20),
                                 Text(
-                                  "ITEM NAME${widget.orders.length}",
+                                  "ITEM NAME",
                                   style: TextStyle(
                                       fontSize: 13,
                                       fontFamily: 'Abel',
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black45),
                                 ),
-                                SizedBox(width: size.width * 0.44),
+                                SizedBox(width: size.width * 0.46),
                                 Text(
                                   " QTY  ",
                                   style: TextStyle(
@@ -158,58 +173,52 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             ),
                           ),
                         ),
-                         
 
                         Positioned(
                             bottom: size.height * 0.040,
                             child: Container(
                               width: size.width,
                               height: size.height * 0.22,
-                              color: Colors.white  ,
-                              child: 
-                                  Wrap(
-                                    children: List.generate(
-                                        widget.orders.length, (index) {
-                                      return Container(
-                                        height: size.height*0.019,
-                                        width: size.width * 0.61,
-                                        color: Colors.white,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(width:10),
-                                            Text(
-                                              "${widget.orders[index].itemName}",
-                                              overflow: TextOverflow.visible,
-                                              style: TextStyle(
-                                                  fontFamily: 'Abel',
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: size.width * 0.025),
-                                            ),
-                                            Spacer(),
-                                            Text(
-                                              "${widget.orders[index].quantity}",
-                                              textAlign: TextAlign.end,
-                                              overflow: TextOverflow.visible,
-                                              style: TextStyle(
-                                                  // color: Colors.black87,
-                                                  fontFamily: 'Abel',
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: size.width * 0.026),
-                                            ),
-                                          ],
+                              color: Colors.white,
+                              child: Wrap(
+                                children: List.generate(widget.orders.length,
+                                    (index) {
+                                  return Container(
+                                    height: size.height * 0.018,
+                                    width: size.width * 0.61,
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        SizedBox(width: 10),
+                                        Text(
+                                          "${widget.orders[index].itemName}",
+                                          overflow: TextOverflow.visible,
+                                          style: TextStyle(
+                                              fontFamily: 'Abel',
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: size.width * 0.022),
                                         ),
-                                      );
-                                    }),
-                                  ),
-                                
-                            )
-                           
-                            ),
-                           
+                                        Spacer(),
+                                        Text(
+                                          "${widget.orders[index].quantity}",
+                                          textAlign: TextAlign.end,
+                                          overflow: TextOverflow.visible,
+                                          style: TextStyle(
+                                              // color: Colors.black87,
+                                              fontFamily: 'Abel',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: size.width * 0.024),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
+                            )),
 
                         Positioned(
                           bottom: size.height * 0.015,
@@ -236,13 +245,13 @@ class _AllOrdersListState extends State<AllOrdersList> {
                             ),
                           )),
                         ),
-                      Positioned(
-                           top: size.height * 0.05,
-                           left: size.width*0.65,
-                        child: widget.foodStatus.foodStatus=="CONFIRMED"||widget.foodStatus.foodStatus=="NEW ORDER"?  Image.asset("images/dot.png",width: 40,color: Colors.red,):
-                        widget.foodStatus.foodStatus=="BEING_PREPARED"? Image.asset("images/dot.png",width: 40,color: Colors.orange,):
-                         Image.asset("images/dot.png",width: 40,color: Colors.green,)
-                      ),
+                        // Positioned(
+                        //      top: size.height * 0.05,
+                        //      left: size.width*0.65,
+                        //   child: widget.foodStatus.foodStatus=="CONFIRMED"||widget.foodStatus.foodStatus=="NEW ORDER"?  Image.asset("images/dot.png",width: 40,color: Colors.red,):
+                        //   widget.foodStatus.foodStatus=="BEING_PREPARED"? Image.asset("images/dot.png",width: 40,color: Colors.orange,):
+                        //    Image.asset("images/dot.png",width: 40,color: Colors.green,)
+                        // ),
                         Positioned(
                           bottom: size.height * 0.010,
                           left: size.width * 0.4,
@@ -255,29 +264,27 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                   isFavorite[index] = isFavorite[index] == null
                                       ? true
                                       : !isFavorite[index];
-                                         if (isFavorite[index]==true && widget.foodStatus.foodStatus=="NEW ORDER") {
-                                           print(widget.foodStatus.foodStatus);
+                                  if (isFavorite[index] == true &&
+                                      widget.foodStatus.foodStatus ==
+                                          "NEW ORDER") {
+                                    print(widget.foodStatus.foodStatus);
                                     Toast.show("order confirmed", context,
                                         duration: 2,
                                         gravity: Toast.CENTER,
-                                        backgroundColor: Colors.black
-                                        );
+                                        backgroundColor: Colors.black);
                                     //isFavorite[index] = !isFavorite[index];
-                                    confirmOrder(
-                                        widget.orderId);
-                                  }
-                                  else{
+                                    confirmOrder(widget.orderId);
+                                  } else {
                                     Toast.show("already confirmed", context,
                                         duration: 2,
                                         gravity: Toast.CENTER,
-                                        backgroundColor: Colors.black
-                                        );
+                                        backgroundColor: Colors.black);
                                   }
-                                  setState(() {
-                                      
-                                  });
+                                  setState(() {});
                                 },
-                                child: isFavorite[index] == null&&widget.foodStatus.foodStatus=="NEW ORDER"
+                                child: isFavorite[index] == null &&
+                                        widget.foodStatus.foodStatus ==
+                                            "NEW ORDER"
                                     ? Container(
                                         // color: Colors.green,
                                         width:
@@ -302,7 +309,7 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                               fontFamily: 'Abel'),
                                         )),
                                       )
-                                    : isFavorite[index]==false
+                                    : isFavorite[index] == false
                                         ? Container(
                                             // color: Colors.green,
                                             width: MediaQuery.of(context)
@@ -377,7 +384,8 @@ class _AllOrdersListState extends State<AllOrdersList> {
           }),
     );
   }
-  confirmOrder(var orderId)async{
+
+  confirmOrder(var orderId) async {
     await confirmOrderBLoc.conformOrder(orderId);
   }
 }
