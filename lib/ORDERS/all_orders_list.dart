@@ -1,4 +1,5 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -6,9 +7,11 @@ import 'package:kafe/BLOC/Today_order_bloc.dart';
 import 'package:kafe/BLOC/all_orders_Bloc.dart';
 import 'package:kafe/BLOC/conform-order_bloc.dart';
 import 'package:kafe/MODELS/order_response_model.dart';
+import 'package:kafe/WIDGETS/bill_printer.dart';
 import 'package:toast/toast.dart';
 
 class AllOrdersList extends StatefulWidget {
+  final BillStatus smsStatus;
   final FoodStatus foodStatus;
   String userId;
   int orderId;
@@ -18,6 +21,7 @@ class AllOrdersList extends StatefulWidget {
   int tableNo;
   AllOrdersList(
       {this.orderId,
+      this.smsStatus,
       this.price,
       this.orders,
       this.date,
@@ -31,6 +35,7 @@ class AllOrdersList extends StatefulWidget {
 
 class _AllOrdersListState extends State<AllOrdersList> {
   List<bool> isFavorite;
+   List<bool> sms;
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -50,6 +55,11 @@ class _AllOrdersListState extends State<AllOrdersList> {
             if (snapshot.hasData) {
               if (isFavorite == null) {
                 isFavorite = List<bool>(snapshot.data.length);
+             
+              }
+                 if (sms == null) {
+                sms = List<bool>(snapshot.data.length);
+             
               }
            
               //List<Aminety>aminities=snapshot.data[0].aminety;
@@ -252,6 +262,145 @@ class _AllOrdersListState extends State<AllOrdersList> {
                         //   widget.foodStatus.foodStatus=="BEING_PREPARED"? Image.asset("images/dot.png",width: 40,color: Colors.orange,):
                         //    Image.asset("images/dot.png",width: 40,color: Colors.green,)
                         // ),
+
+                         Positioned(
+                          bottom: size.height * 0.012,
+                          left: size.width * 0.28,
+                          child: ButtonTheme(
+                              buttonColor: Colors.white54,
+                              minWidth: 10.0,
+                              height: 15.0,
+                              child:Container(
+                                     //   color: Colors.red,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.10,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.035,
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: new BorderRadius.all(Radius.circular(20.0),
+                                             )),
+                                        child: Center(
+                                          child: IconButton(
+                                            icon: Icon(Icons.local_printshop,color: Colors.black,),
+                                            onPressed: (){
+                                              setState(() {
+                                               // billPtinter(context,widget.orders);
+                                              });
+                                            },
+                                          )
+                                        //     child: Text(
+                                        //   "PRINT",
+                                        //   style: TextStyle(
+                                        //       color: Colors.white,
+                                        //       fontFamily: 'Abel'),
+                                        // )
+                                        ),
+                                      )
+                        ),),
+                         Positioned(
+                        bottom: size.height * 0.012,
+                          left: size.width * 0.20,
+                          child: ButtonTheme(
+                              buttonColor: Colors.white54,
+                              minWidth: 10.0,
+                              height: 15.0,
+                              child: InkWell(
+                                onTap: () {
+                                  sms[index] = sms[index] == null
+                                      ? true
+                                      : !sms[index];
+                                  if (sms[index] == null||sms[index] == true||sms[index] == false
+                                  &&widget.smsStatus.sms!="SENT"
+                                     ) {
+                                   
+                                    Toast.show("sms sent", context,
+                                        duration: 2,
+                                        gravity: Toast.CENTER,
+                                        backgroundColor: Colors.black);
+                                    //isFavorite[index] = !isFavorite[index];
+                                    final response =  Dio().get("http://142.93.219.45:8080/foodies/foodie/sms?orderId=${widget.orderId}");
+                                    print(response);
+                                  } 
+                                 
+                                  setState(() {});
+                                },
+                                child: widget.smsStatus.sms!="SENT"
+                                        
+                                            
+                                    ? Container(
+                                     //   color: Colors.red,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.08,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.025,
+                                        decoration: new BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: new BorderRadius.all(Radius.circular(20.0),
+                                             )),
+                                        child: Center(
+                                            child: Text(
+                                          "SMS",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Abel'),
+                                        )),
+                                      )
+                                    :widget.smsStatus.sms=="SENT"
+                                        ? Container(
+                                     //   color: Colors.red,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.10,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.025,
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: new BorderRadius.all(Radius.circular(20.0),
+                                             )),
+                                            child: Center(
+                                                child: Text(
+                                              "",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'Abel'),
+                                            )),
+                                          )
+                                        : Container(
+                                            // color: Colors.green,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.10,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.03,
+                                            decoration: new BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: new BorderRadius
+                                                        .only(
+                                                    topLeft:
+                                                        const Radius.circular(
+                                                            20.0),
+                                                    bottomLeft:
+                                                        const Radius.circular(
+                                                            20.0))),
+                                            child: Center(
+                                                child: Text(
+                                              "CONFIRMED",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'Abel'),
+                                            )),
+                                          ),
+                              )),
+                        ),
                         Positioned(
                           bottom: size.height * 0.010,
                           left: size.width * 0.4,
@@ -264,7 +413,11 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                   isFavorite[index] = isFavorite[index] == null
                                       ? true
                                       : !isFavorite[index];
-                                  if (isFavorite[index] == true &&
+                                  if (isFavorite[index] == null &&
+                                      widget.foodStatus.foodStatus ==
+                                          "NEW ORDER"||isFavorite[index] == true &&
+                                      widget.foodStatus.foodStatus ==
+                                          "NEW ORDER"||isFavorite[index] == false &&
                                       widget.foodStatus.foodStatus ==
                                           "NEW ORDER") {
                                     print(widget.foodStatus.foodStatus);
@@ -279,12 +432,13 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                         duration: 2,
                                         gravity: Toast.CENTER,
                                         backgroundColor: Colors.black);
+                                        
                                   }
                                   setState(() {});
                                 },
-                                child: isFavorite[index] == null &&
-                                        widget.foodStatus.foodStatus ==
-                                            "NEW ORDER"
+                                child: 
+                                        widget.foodStatus.foodStatus =="NEW ORDER"
+                                          
                                     ? Container(
                                         // color: Colors.green,
                                         width:
@@ -309,36 +463,9 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                               fontFamily: 'Abel'),
                                         )),
                                       )
-                                    : isFavorite[index] == false
-                                        ? Container(
-                                            // color: Colors.green,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.30,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.03,
-                                            decoration: new BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: new BorderRadius
-                                                        .only(
-                                                    topLeft:
-                                                        const Radius.circular(
-                                                            20.0),
-                                                    bottomLeft:
-                                                        const Radius.circular(
-                                                            20.0))),
-                                            child: Center(
-                                                child: Text(
-                                              "",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: 'Abel'),
-                                            )),
-                                          )
-                                        : Container(
+                                    // : isFavorite[index] == false&&widget.foodStatus.foodStatus !="NEW ORDER"
+                                    //     ?
+                                       :  Container(
                                             // color: Colors.green,
                                             width: MediaQuery.of(context)
                                                     .size
@@ -365,7 +492,35 @@ class _AllOrdersListState extends State<AllOrdersList> {
                                                   color: Colors.white,
                                                   fontFamily: 'Abel'),
                                             )),
-                                          ),
+                                          )
+                                        // : Container(
+                                        //     // color: Colors.green,
+                                        //     width: MediaQuery.of(context)
+                                        //             .size
+                                        //             .width *
+                                        //         0.30,
+                                        //     height: MediaQuery.of(context)
+                                        //             .size
+                                        //             .height *
+                                        //         0.03,
+                                        //     decoration: new BoxDecoration(
+                                        //         color: Colors.pink,
+                                        //         borderRadius: new BorderRadius
+                                        //                 .only(
+                                        //             topLeft:
+                                        //                 const Radius.circular(
+                                        //                     20.0),
+                                        //             bottomLeft:
+                                        //                 const Radius.circular(
+                                        //                     20.0))),
+                                        //     child: Center(
+                                        //         child: Text(
+                                        //       "CONFIRMED",
+                                        //       style: TextStyle(
+                                        //           color: Colors.white,
+                                        //           fontFamily: 'Abel'),
+                                        //     )),
+                                        //   ),
                               )),
                         ),
                       ],
